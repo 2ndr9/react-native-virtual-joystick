@@ -11,16 +11,31 @@ npm install react-native-virtual-joystick
 ## Usage
 
 ```js
-import { multiply } from 'react-native-virtual-joystick';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { JoyStick } from 'react-native-virtual-joystick';
 
 // ...
-
-const result = await multiply(3, 7);
+<GestureHandlerRootView
+  style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+>
+  <JoyStick
+    wrapperColor="#808080"
+    nippleColor="#D3D3D3"
+    wrapperRadius={60}
+    nippleRadius={20}
+    borderWidth={5}
+    onMove={(data) => {
+      console.log(data);
+    }}
+    onTouchDown={(data) => {
+      console.log(data);
+    }}
+    onTouchUp={(data) => {
+      console.log(data);
+    }}
+  />
+</GestureHandlerRootView>;
 ```
-
-## Contributing
-
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 
