@@ -1,3 +1,5 @@
+[![NPM](https://nodei.co/npm/react-native-virtual-joystick.png)](https://nodei.co/npm/react-native-virtual-joystick/)
+
 # react-native-virtual-joystick
 
 simple React Native virtual joystick
