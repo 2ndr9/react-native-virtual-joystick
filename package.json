@@ -1,6 +1,6 @@
 {
   "name": "react-native-virtual-joystick",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "simple react native virtual joystick",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
