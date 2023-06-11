@@ -7,6 +7,7 @@ import {
 } from 'react-native-gesture-handler';
 import {
   calcDistance,
+  calcMagnitudeInPercent,
   clampPositionToCircle,
   convertFromBottomLeftOfWrapperToFromCenterOfWrapper,
 } from './utils';
@@ -21,6 +22,7 @@ interface JoystickEvent {
     x: number;
     y: number;
   };
+  joystickMagnitude: number;
   timestamp: number;
 }
 
@@ -89,6 +91,11 @@ const JoyStick: React.FC<Props> = (props) => {
           y: fingerY,
         },
         type: 'move',
+        joystickMagnitude: calcMagnitudeInPercent(
+          xClamped,
+          yClamped,
+          wrapperRadius
+        ),
         timestamp: new Date().getTime(),
       });
   };
@@ -111,6 +118,7 @@ const JoyStick: React.FC<Props> = (props) => {
         type: 'stop',
         stickPosition: { x: 0, y: 0 },
         fingerPosition: { x: fingerX, y: fingerY },
+        joystickMagnitude: calcMagnitudeInPercent(0, 0, wrapperRadius),
         timestamp: new Date().getTime(),
       });
   };
@@ -150,6 +158,11 @@ const JoyStick: React.FC<Props> = (props) => {
         // do not pass x state and y state directly because state does not updated immediately
         stickPosition: { x: xClamped, y: yClamped },
         fingerPosition: { x: fingerX, y: fingerY },
+        joystickMagnitude: calcMagnitudeInPercent(
+          xClamped,
+          yClamped,
+          wrapperRadius
+        ),
         timestamp: new Date().getTime(),
       });
   };

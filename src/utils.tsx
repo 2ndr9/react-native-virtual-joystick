@@ -24,3 +24,21 @@ export const clampPositionToCircle = (
     ? fingerXOrY
     : (wrapperRadius * fingerXOrY) / distanceBetweenCenterAndFinger;
 };
+
+export const calcMagnitudeInPercent = (
+  stickX: number,
+  stickY: number,
+  wrapperRadius: number
+): number => {
+  const distanceBetweenCenterAndStick = calcDistance(
+    { x: 0, y: 0 },
+    { x: stickX, y: stickY }
+  );
+
+  if (distanceBetweenCenterAndStick <= wrapperRadius) {
+    return distanceBetweenCenterAndStick / wrapperRadius;
+  } else {
+    // this should not happen
+    return 100;
+  }
+};
