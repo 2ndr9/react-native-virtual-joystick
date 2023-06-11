@@ -61,19 +61,19 @@ const JoyStick: React.FC<Props> = (props) => {
       wrapperRadius
     );
 
-    const distance_between_center_and_finger = calcDistance(
+    const distanceBetweenCenterAndFinger = calcDistance(
       { x: 0, y: 0 },
       { x: fingerX, y: fingerY }
     );
 
     const xClamped = clampPositionToCircle(
       fingerX,
-      distance_between_center_and_finger,
+      distanceBetweenCenterAndFinger,
       wrapperRadius
     );
     const yClamped = clampPositionToCircle(
       fingerY,
-      distance_between_center_and_finger,
+      distanceBetweenCenterAndFinger,
       wrapperRadius
     );
 
@@ -125,19 +125,19 @@ const JoyStick: React.FC<Props> = (props) => {
       wrapperRadius
     );
 
-    const distance_between_center_and_finger = calcDistance(
+    const distanceBetweenCenterAndFinger = calcDistance(
       { x: 0, y: 0 },
       { x: fingerX, y: fingerY }
     );
 
     const xClamped = clampPositionToCircle(
       fingerX,
-      distance_between_center_and_finger,
+      distanceBetweenCenterAndFinger,
       wrapperRadius
     );
     const yClamped = clampPositionToCircle(
       fingerY,
-      distance_between_center_and_finger,
+      distanceBetweenCenterAndFinger,
       wrapperRadius
     );
 

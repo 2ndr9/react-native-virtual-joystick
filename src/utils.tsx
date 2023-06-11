@@ -17,10 +17,10 @@ export const convertFromBottomLeftOfWrapperToFromCenterOfWrapper = (
 
 export const clampPositionToCircle = (
   fingerXOrY: number,
-  distance_between_center_and_finger: number,
+  distanceBetweenCenterAndFinger: number,
   wrapperRadius: number
 ) => {
-  return distance_between_center_and_finger <= wrapperRadius
+  return distanceBetweenCenterAndFinger <= wrapperRadius
     ? fingerXOrY
-    : (wrapperRadius * fingerXOrY) / distance_between_center_and_finger;
+    : (wrapperRadius * fingerXOrY) / distanceBetweenCenterAndFinger;
 };
