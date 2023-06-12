@@ -36,7 +36,7 @@ export const calcMagnitudeInPercent = (
   );
 
   if (distanceBetweenCenterAndStick <= wrapperRadius) {
-    return distanceBetweenCenterAndStick / wrapperRadius;
+    return (distanceBetweenCenterAndStick / wrapperRadius) * 100;
   } else {
     // this should not happen
     return 100;
