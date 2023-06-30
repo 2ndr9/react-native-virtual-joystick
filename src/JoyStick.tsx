@@ -32,6 +32,7 @@ interface Props {
   onTouchUp?: (e: JoystickEvent) => void;
   wrapperRadius: number;
   nippleRadius: number;
+  fingerCircleRadius: number;
   wrapperColor: string;
   nippleColor: string;
   borderWidth: number;
@@ -46,6 +47,7 @@ const JoyStick: React.FC<Props> = (props) => {
     nippleColor,
     wrapperRadius,
     nippleRadius,
+    fingerCircleRadius,
     borderWidth,
   } = props;
 
@@ -53,34 +55,40 @@ const JoyStick: React.FC<Props> = (props) => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
+  const [fingerX, setFingerX] = useState(0);
+  const [fingerY, setFingerY] = useState(0);
+
   const handleTouchMove = (e: GestureTouchEvent) => {
-    const fingerX = convertFromBottomLeftOfWrapperToFromCenterOfWrapper(
+    const tmp_fingerX = convertFromBottomLeftOfWrapperToFromCenterOfWrapper(
       e.changedTouches[0]!.x,
       wrapperRadius
     );
-    const fingerY = convertFromBottomLeftOfWrapperToFromCenterOfWrapper(
+    const tmp_fingerY = convertFromBottomLeftOfWrapperToFromCenterOfWrapper(
       e.changedTouches[0]!.y,
       wrapperRadius
     );
 
     const distanceBetweenCenterAndFinger = calcDistance(
       { x: 0, y: 0 },
-      { x: fingerX, y: fingerY }
+      { x: tmp_fingerX, y: tmp_fingerY }
     );
 
     const xClamped = clampPositionToCircle(
-      fingerX,
+      tmp_fingerX,
       distanceBetweenCenterAndFinger,
       wrapperRadius
     );
     const yClamped = clampPositionToCircle(
-      fingerY,
+      tmp_fingerY,
       distanceBetweenCenterAndFinger,
       wrapperRadius
     );
 
     setX(xClamped);
     setY(yClamped);
+
+    setFingerX(tmp_fingerX);
+    setFingerY(tmp_fingerY);
 
     onMove &&
       onMove({
@@ -104,11 +112,14 @@ const JoyStick: React.FC<Props> = (props) => {
     setX(0);
     setY(0);
 
-    const fingerX = convertFromBottomLeftOfWrapperToFromCenterOfWrapper(
+    setFingerX(0);
+    setFingerY(0);
+
+    const tmp_fingerX = convertFromBottomLeftOfWrapperToFromCenterOfWrapper(
       e.changedTouches[0]!.x,
       wrapperRadius
     );
-    const fingerY = convertFromBottomLeftOfWrapperToFromCenterOfWrapper(
+    const tmp_fingerY = convertFromBottomLeftOfWrapperToFromCenterOfWrapper(
       e.changedTouches[0]!.y,
       wrapperRadius
     );
@@ -117,34 +128,34 @@ const JoyStick: React.FC<Props> = (props) => {
       onTouchUp({
         type: 'stop',
         stickPosition: { x: 0, y: 0 },
-        fingerPosition: { x: fingerX, y: fingerY },
+        fingerPosition: { x: tmp_fingerX, y: tmp_fingerY },
         joystickMagnitude: calcMagnitudeInPercent(0, 0, wrapperRadius),
         timestamp: new Date().getTime(),
       });
   };
 
   const handleTouchDown = (e: GestureTouchEvent) => {
-    const fingerX = convertFromBottomLeftOfWrapperToFromCenterOfWrapper(
+    const tmp_fingerX = convertFromBottomLeftOfWrapperToFromCenterOfWrapper(
       e.changedTouches[0]!.x,
       wrapperRadius
     );
-    const fingerY = convertFromBottomLeftOfWrapperToFromCenterOfWrapper(
+    const tmp_fingerY = convertFromBottomLeftOfWrapperToFromCenterOfWrapper(
       e.changedTouches[0]!.y,
       wrapperRadius
     );
 
     const distanceBetweenCenterAndFinger = calcDistance(
       { x: 0, y: 0 },
-      { x: fingerX, y: fingerY }
+      { x: tmp_fingerX, y: tmp_fingerY }
     );
 
     const xClamped = clampPositionToCircle(
-      fingerX,
+      tmp_fingerX,
       distanceBetweenCenterAndFinger,
       wrapperRadius
     );
     const yClamped = clampPositionToCircle(
-      fingerY,
+      tmp_fingerY,
       distanceBetweenCenterAndFinger,
       wrapperRadius
     );
@@ -152,12 +163,15 @@ const JoyStick: React.FC<Props> = (props) => {
     setX(xClamped);
     setY(yClamped);
 
+    setFingerX(tmp_fingerX);
+    setFingerY(tmp_fingerY);
+
     onTouchDown &&
       onTouchDown({
         type: 'start',
         // do not pass x state and y state directly because state does not updated immediately
         stickPosition: { x: xClamped, y: yClamped },
-        fingerPosition: { x: fingerX, y: fingerY },
+        fingerPosition: { x: tmp_fingerX, y: tmp_fingerY },
         joystickMagnitude: calcMagnitudeInPercent(
           xClamped,
           yClamped,
@@ -217,6 +231,23 @@ const JoyStick: React.FC<Props> = (props) => {
               left: x,
             },
           ]}
+        />
+        <View
+          style={{
+            height: 2 * fingerCircleRadius,
+            width: 2 * fingerCircleRadius,
+            borderRadius: fingerCircleRadius,
+            borderWidth: 2,
+            borderColor: 'red',
+
+            position: 'absolute',
+            top: fingerY,
+            left: fingerX,
+            transform: [
+              { translateX: -fingerCircleRadius + wrapperRadius - borderWidth },
+              { translateY: -fingerCircleRadius + wrapperRadius - borderWidth },
+            ],
+          }}
         />
       </View>
     </GestureDetector>
