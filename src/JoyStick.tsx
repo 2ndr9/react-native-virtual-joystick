@@ -32,7 +32,7 @@ interface Props {
   onTouchUp?: (e: JoystickEvent) => void;
   wrapperRadius: number;
   nippleRadius: number;
-  fingerCircleRadius: number;
+  fingerCircleRadius: number | undefined;
   wrapperColor: string;
   nippleColor: string;
   borderWidth: number;
@@ -250,23 +250,30 @@ const JoyStick: React.FC<Props> = (props) => {
             },
           ]}
         />
-        <View
-          style={{
-            height: 2 * fingerCircleRadius,
-            width: 2 * fingerCircleRadius,
-            borderRadius: fingerCircleRadius,
-            borderWidth: 2,
-            borderColor: 'red',
 
-            position: 'absolute',
-            top: fingerY,
-            left: fingerX,
-            transform: [
-              { translateX: -fingerCircleRadius + wrapperRadius - borderWidth },
-              { translateY: -fingerCircleRadius + wrapperRadius - borderWidth },
-            ],
-          }}
-        />
+        {fingerCircleRadius && (
+          <View
+            style={{
+              height: 2 * fingerCircleRadius,
+              width: 2 * fingerCircleRadius,
+              borderRadius: fingerCircleRadius,
+              borderWidth: 2,
+              borderColor: 'red',
+
+              position: 'absolute',
+              top: fingerY,
+              left: fingerX,
+              transform: [
+                {
+                  translateX: -fingerCircleRadius + wrapperRadius - borderWidth,
+                },
+                {
+                  translateY: -fingerCircleRadius + wrapperRadius - borderWidth,
+                },
+              ],
+            }}
+          />
+        )}
       </View>
     </GestureDetector>
   );
