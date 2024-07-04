@@ -58,7 +58,13 @@ const JoyStick: React.FC<Props> = (props) => {
   const [fingerX, setFingerX] = useState(0);
   const [fingerY, setFingerY] = useState(0);
 
+  const [isCorrectlyTouchDowned, setIsCorrectlyTouchDowned] = useState(false);
+
   const handleTouchMove = (e: GestureTouchEvent) => {
+    if (isCorrectlyTouchDowned === false) {
+      return;
+    }
+
     const tmp_fingerX = convertFromBottomLeftOfWrapperToFromCenterOfWrapper(
       e.changedTouches[0]!.x,
       wrapperRadius
@@ -109,6 +115,10 @@ const JoyStick: React.FC<Props> = (props) => {
   };
 
   const handleTouchUp = (e: GestureTouchEvent) => {
+    if (isCorrectlyTouchDowned === false) {
+      return;
+    }
+
     setX(0);
     setY(0);
 
@@ -132,6 +142,8 @@ const JoyStick: React.FC<Props> = (props) => {
         joystickMagnitude: calcMagnitudeInPercent(0, 0, wrapperRadius),
         timestamp: new Date().getTime(),
       });
+
+    setIsCorrectlyTouchDowned(false);
   };
 
   const handleTouchDown = (e: GestureTouchEvent) => {
@@ -148,6 +160,10 @@ const JoyStick: React.FC<Props> = (props) => {
       { x: 0, y: 0 },
       { x: tmp_fingerX, y: tmp_fingerY }
     );
+
+    if (distanceBetweenCenterAndFinger > wrapperRadius) {
+      return;
+    }
 
     const xClamped = clampPositionToCircle(
       tmp_fingerX,
@@ -179,6 +195,8 @@ const JoyStick: React.FC<Props> = (props) => {
         ),
         timestamp: new Date().getTime(),
       });
+
+    setIsCorrectlyTouchDowned(true);
   };
 
   const panGesture = Gesture.Pan()
