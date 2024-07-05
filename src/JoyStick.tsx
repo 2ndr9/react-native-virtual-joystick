@@ -257,8 +257,8 @@ const JoyStick: React.FC<Props> = (props) => {
               height: 2 * fingerCircleRadius,
               width: 2 * fingerCircleRadius,
               borderRadius: fingerCircleRadius,
-              borderWidth: 2,
-              borderColor: 'red',
+
+              backgroundColor: 'red',
 
               position: 'absolute',
               top: fingerY,
